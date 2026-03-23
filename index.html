@@ -15,8 +15,8 @@
 
 body {
   background: #0a0a0a;
-  color: #fff;
-  line-height: 1.6;
+  color: white;
+  overflow-x: hidden;
 }
 
 /* ===== NAV ===== */
@@ -26,13 +26,9 @@ nav {
   padding: 20px 40px;
   display: flex;
   justify-content: space-between;
-  backdrop-filter: blur(10px);
-  background: rgba(0,0,0,0.5);
-}
-
-nav h1 {
-  font-size: 18px;
-  font-weight: 500;
+  backdrop-filter: blur(12px);
+  background: rgba(0,0,0,0.4);
+  z-index: 100;
 }
 
 nav a {
@@ -40,23 +36,31 @@ nav a {
   margin-left: 20px;
   text-decoration: none;
 }
-
-nav a:hover {
-  color: #fff;
-}
+nav a:hover { color: white; }
 
 /* ===== HERO ===== */
 .hero {
-  height: 100vh;
+  height: 120vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 0 10%;
+  transform: translateY(50px);
+  opacity: 0;
+  transition: 1s;
 }
 
-.hero h2 {
-  font-size: 60px;
+.hero.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.hero h1 {
+  font-size: 70px;
   font-weight: 600;
+  background: linear-gradient(90deg,#fff,#aaa);
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
 .hero p {
@@ -67,72 +71,180 @@ nav a:hover {
 
 .btn {
   margin-top: 30px;
-  padding: 12px 24px;
+  padding: 12px 26px;
   border-radius: 30px;
-  background: linear-gradient(135deg, #5f9cff, #a66bff);
+  background: linear-gradient(135deg,#5f9cff,#a66bff);
   border: none;
   color: white;
   cursor: pointer;
   transition: 0.3s;
 }
-
 .btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(150,150,255,0.5);
+  transform: scale(1.08);
+  box-shadow: 0 0 30px rgba(120,120,255,0.8);
 }
 
 /* ===== SECTION ===== */
 section {
-  padding: 100px 10%;
+  padding: 120px 10%;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: 1s;
 }
 
-h3 {
-  font-size: 32px;
+section.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+h2 {
+  font-size: 34px;
   margin-bottom: 40px;
+}
+
+/* ===== FILTER ===== */
+.filters {
+  margin-bottom: 40px;
+}
+
+.filter-btn {
+  padding: 8px 18px;
+  margin-right: 10px;
+  border-radius: 20px;
+  border: 1px solid #333;
+  background: transparent;
+  color: #aaa;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+  color: white;
+  border-color: #888;
 }
 
 /* ===== GRID ===== */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
 }
 
+/* ===== CARD ===== */
 .card {
   background: #111;
   border-radius: 20px;
   overflow: hidden;
-  transition: 0.3s;
+  position: relative;
+  cursor: pointer;
+  transition: 0.4s;
 }
 
 .card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 0 30px rgba(120,120,255,0.3);
 }
 
-.card img, .card video {
+/* 发光边框 */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  padding: 1px;
+  background: linear-gradient(45deg,#5f9cff,#a66bff,transparent);
+  -webkit-mask: 
+    linear-gradient(#000 0 0) content-box, 
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  opacity: 0;
+  transition: 0.4s;
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card img {
   width: 100%;
   display: block;
 }
 
+/* ===== VIDEO COVER ===== */
+.video-wrapper {
+  position: relative;
+}
+
+.play-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.play-btn::after {
+  content: "";
+  border-left: 12px solid white;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  margin-left: 3px;
+}
+
 .card p {
-  padding: 15px;
+  padding: 12px;
   color: #aaa;
+}
+
+/* ===== MODAL ===== */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.9);
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal.active {
+  display: flex;
+}
+
+.modal-content {
+  max-width: 80%;
+  max-height: 80%;
+}
+
+.modal video,
+.modal img {
+  width: 100%;
+  border-radius: 12px;
 }
 
 /* ===== FOOTER ===== */
 footer {
   text-align: center;
-  padding: 40px;
+  padding: 50px;
   color: #666;
 }
 </style>
-
 </head>
 
 <body>
 
 <nav>
-  <h1>Lemon Tess</h1>
+  <div>Lemon Tess</div>
   <div>
     <a href="#about">About</a>
     <a href="#work">Work</a>
@@ -140,36 +252,101 @@ footer {
 </nav>
 
 <!-- HERO -->
-<div class="hero">
-  <h2>Hello, I'm Lemon Tess</h2>
-  <p>
-    I create digital visuals and creative projects.
-    Minimal, aesthetic, and a bit experimental.
-  </p>
-  <button class="btn" onclick="scrollToWork()">View My Work</button>
+<div class="hero" id="hero">
+  <h1>Lemon Tess</h1>
+  <p>Minimal visual works & experimental aesthetics.</p>
+  <button class="btn" onclick="scrollToWork()">View Work</button>
 </div>
 
 <!-- ABOUT -->
 <section id="about">
-  <h3>About Me</h3>
-  <p>
-    I'm focused on creating visuals that feel clean, modern, and expressive.
-    I enjoy blending minimal design with subtle motion and atmosphere.
-  </p>
+  <h2>About</h2>
+  <p>I create clean, modern visuals with subtle motion and atmosphere.</p>
 </section>
 
 <!-- WORK -->
 <section id="work">
-  <h3>Selected Work</h3>
+  <h2>Work</h2>
+
+  <div class="filters">
+    <button class="filter-btn active" onclick="filter('all')">All</button>
+    <button class="filter-btn" onclick="filter('image')">Images</button>
+    <button class="filter-btn" onclick="filter('video')">Videos</button>
+  </div>
 
   <div class="grid">
 
     <!-- IMAGE -->
-    <div class="card">
-      <img src="https://picsum.photos/500/300?1">
-      <p>Project One</p>
+    <div class="card" data-type="image" onclick="openModal('img','https://picsum.photos/600/400?1')">
+      <img src="https://picsum.photos/600/400?1">
+      <p>Visual 01</p>
     </div>
 
     <!-- VIDEO -->
-    <div class="card">
-      <video src="your-video.mp4" autoplay muted loop
+    <div class="card" data-type="video" onclick="openModal('video','your-video.mp4')">
+      <div class="video-wrapper">
+        <img src="https://picsum.photos/600/400?2">
+        <div class="play-btn"></div>
+      </div>
+      <p>Video 01</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- MODAL -->
+<div class="modal" id="modal" onclick="closeModal()">
+  <div class="modal-content" id="modalContent"></div>
+</div>
+
+<footer>© 2026 Lemon Tess</footer>
+
+<script>
+// 滚动动画
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('show');
+    }
+  });
+});
+
+document.querySelectorAll('.hero, section').forEach(el => observer.observe(el));
+
+// 滚动按钮
+function scrollToWork() {
+  document.getElementById('work').scrollIntoView({behavior:'smooth'});
+}
+
+// 分类
+function filter(type) {
+  const cards = document.querySelectorAll('.card');
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+
+  cards.forEach(card=>{
+    card.style.display = (type==='all'||card.dataset.type===type)?'block':'none';
+  });
+}
+
+// 弹窗
+function openModal(type, src) {
+  const modal = document.getElementById('modal');
+  const content = document.getElementById('modalContent');
+
+  if(type==='img'){
+    content.innerHTML = `<img src="${src}">`;
+  } else {
+    content.innerHTML = `<video src="${src}" controls autoplay></video>`;
+  }
+
+  modal.classList.add('active');
+}
+
+function closeModal(){
+  document.getElementById('modal').classList.remove('active');
+}
+</script>
+
+</body>
+</html>
